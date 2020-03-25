@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.2.5.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.liquibase.gradle' version '2.0.2'
 	id 'groovy'
 }
 
@@ -25,9 +26,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.codehaus.groovy:groovy'
-	implementation 'org.liquibase:liquibase-core'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.postgresql:postgresql'
+	liquibaseRuntime 'org.slf4j:slf4j-api:1.7.30'
+	liquibaseRuntime 'org.slf4j:slf4j-simple:1.7.30'
+	liquibaseRuntime 'ch.qos.logback:logback-core:1.2.3'
+	liquibaseRuntime 'org.liquibase:liquibase-core:3.8.1'
+	liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
+	liquibaseRuntime 'org.postgresql:postgresql'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -36,4 +41,28 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+project.ext.mainUrl = 'jdbc:postgresql://localhost:5432/jokemanager'
+project.ext.mainUsername = 'jokeadmin'
+project.ext.mainPassword = 'jokeadminpw'
+project.ext.runList = 'runMain'
+
+liquibase {
+	activities {
+		runMain {
+			changeLogFile 'src/main/db/main.groovy'
+			url project.ext.mainUrl
+			username project.ext.mainUsername
+			password project.ext.mainPassword
+		}
+		diffMain {
+			changeLogFile 'src/main/db/main.groovy'
+			url project.ext.mainUrl
+			username project.ext.mainUsername
+			password project.ext.mainPassword
+			difftypes 'data'
+		}
+	}
+	runList = project.ext.runList
 }
