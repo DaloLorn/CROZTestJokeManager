@@ -9,6 +9,7 @@ import javax.persistence.Id
 
 @Entity
 class Joke {
+    @SuppressWarnings("GrFinalVariableAccess")
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     final int id

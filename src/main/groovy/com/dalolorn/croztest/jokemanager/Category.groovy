@@ -7,6 +7,7 @@ import javax.persistence.Id
 
 @Entity
 class Category {
+    @SuppressWarnings("GrFinalVariableAccess")
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     final int id
