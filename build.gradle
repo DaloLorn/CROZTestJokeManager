@@ -46,7 +46,7 @@ test {
 project.ext.mainUrl = 'jdbc:postgresql://localhost:5432/jokemanager'
 project.ext.mainUsername = 'jokeadmin'
 project.ext.mainPassword = 'jokeadminpw'
-project.ext.runList = 'runMain'
+project.ext.runList = 'runMainSQL'
 
 liquibase {
 	activities {
@@ -62,6 +62,20 @@ liquibase {
 			username project.ext.mainUsername
 			password project.ext.mainPassword
 			difftypes 'data'
+		}
+		// I'm gonna define new activities for the SQL file instead of deleting the ones for the Groovy file.
+		runMainSQL {
+			changeLogFile 'src/main/db/data.sql'
+			url project.ext.mainUrl
+			username project.ext.mainUsername
+			password project.ext.mainPassword
+		}
+		diffMainSQL {
+			changeLogFile 'src/main/db/data.sql'
+			url project.ext.mainUrl
+			username project.ext.mainUsername
+			password project.ext.mainPassword
+			diffTypes 'data'
 		}
 	}
 	runList = project.ext.runList
