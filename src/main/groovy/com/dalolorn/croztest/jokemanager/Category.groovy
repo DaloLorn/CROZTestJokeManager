@@ -9,7 +9,7 @@ import javax.persistence.Id
 class Category {
     @SuppressWarnings("GrFinalVariableAccess")
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     final int id
     String name
 
