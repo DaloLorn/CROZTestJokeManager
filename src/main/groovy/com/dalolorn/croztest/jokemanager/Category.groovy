@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 
+/**
+ * JPA entity class for categories.
+ */
 @Entity
 class Category {
     @SuppressWarnings("GrFinalVariableAccess")
