@@ -10,21 +10,22 @@
     <button><a th:href="${(#mvc.url('JMC#jokeList')).build()}">Back to Home</a></button>
     <form action="#" th:action="@{/new}" th:object="${joke}" method="post">
         <!-- This is a little ugly, but I don't have any decent stylesheets lying around I could quickly drop in, and Bootstrap may be an indirect violation of the no-JavaScript requirement, sooo... not gonna use any CSS right now. Custom or otherwise. -->
-        <p>
+        <p> <!-- Parent element for the category field. -->
             <label for="category">Category: </label>
             <input type="text" list="categories" th:field="*{category}" id="category">
-            <datalist id="categories">
+            <datalist id="categories"> <!-- Suggest existing categories to add to. -->
                 <option th:each="category : ${categories}" th:value="${category}"/>
             </datalist>
-            <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</span>
+            <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</span> <!-- Print errors. -->
         </p>
 
-        <p>
+        <p> <!-- Parent element for the content field. I should've just used Bootstrap... but then, I'd probably have lost another hour tinkering with the design. -->
             <label for="content">Joke content: </label>
             <input type="text" th:field="*{content}" id="content">
-            <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span>
+            <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span> <!-- Print errors. -->
         </p>
 
+        <!-- The buttons don't technically need a parent element... at least not for the purposes I used them for. Styleless HTML stinks. -->
         <input type="submit" value="Submit">
         <input type="reset" value="Reset">
     </form>

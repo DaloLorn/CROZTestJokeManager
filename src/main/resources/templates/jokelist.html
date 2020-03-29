@@ -8,9 +8,10 @@
     <title>Joke List</title>
 </head>
 <body>
+    <!-- This is a little ugly, but I don't have any decent stylesheets lying around I could quickly drop in, and Bootstrap may be an indirect violation of the no-JavaScript requirement, sooo... not gonna use any CSS right now. Custom or otherwise. -->
     <h1>Joke List</h1>
     <table>
-        <tr>
+        <tr> <!-- Table headers. SonarLint is complaining about an accessibility issue, but I'm not sufficiently confident in the amount of time I have left to research and correct it. -->
             <th>#</th>
             <th>Category</th>
             <th>Joke</th>
@@ -19,26 +20,28 @@
             <th>Net Likes</th>
             <th>Like/Dislike</th>
         </tr>
-        <tr th:each="joke : ${jokes}">
-            <td th:text="${jokeStat.index + startingIndex}">Index</td>
-            <td th:text="${categories.get(joke.category)}">Category</td>
+        <tr th:each="joke : ${jokes}"> <!-- Print the joke list. -->
+            <td th:text="${jokeStat.index + startingIndex}">Index</td> <!-- As in JokeManagerController, I can only hope the indexes were supposed to be for the sorted list, rather than joke IDs... -->
+            <td th:text="${categories.get(joke.category)}">Category</td> <!-- Fetch the correct category name from the category map. -->
             <td th:text="${joke.content}">Joke Content</td>
             <td th:text="${joke.likes}">Likes</td>
             <td th:text="${joke.dislikes}">Dislikes</td>
-            <td th:text="${joke.likes - joke.dislikes}">Net Likes</td>
-            <td>
+            <td th:text="${joke.likes - joke.dislikes}">Net Likes</td> <!-- Compute net likes. -->
+            <td> <!-- Like/dislike buttons. There may be a tidier way of refreshing the page afterwards... in fact, I'm almost positive there is... but time constraints. -->
                 <button><a th:href="@{/like(id=${joke.id},page=${param.page?:1}, length=${param.length?:10})}">Like</a></button>
                 <button><a th:href="@{/dislike(id=${joke.id},page=${param.page?:1}, length=${param.length?:10})}">Dislike</a></button>
             </td>
         </tr>
     </table>
-    <p>
-        <button><a th:href="${(#mvc.url('JMC#newJoke')).build()}">Add Joke</a></button>
-        <span sec:authorize="isAuthenticated()"><button><a th:href="@{/logout}">Log out</a></button></span>
-    </p>
-    <span th:each="i : ${#numbers.sequence(1, pageCount)}">
-        <span th:if="${i == (param.page?:1)}" th:text="${i}"> Current</span>
-        <span th:unless="${i == (param.page?:1)}"><a th:href="@{/(page=${i}, length=${param.length?:10})}" th:text="${i}">Page#</a></span>
+
+    <span th:each="i : ${#numbers.sequence(1, pageCount)}"> <!-- Pagination controls. -->
+        <span th:if="${i == (param.page?:1)}" th:text="${i}"> Current</span> <!-- This was supposed to print the page number *without* a link. Alas, Thymeleaf and I didn't quite see eye to eye on the matter. -->
+        <span th:unless="${i == (param.page?:1)}"><a th:href="@{/(page=${i}, length=${param.length?:10})}" th:text="${i}">Page#</a></span> <!-- Links to other pages. I wonder if I could've added a widget to set the page length instead of relying solely upon the query string... -->
     </span>
+
+    <p> <!-- Administrative controls. -->
+        <button><a th:href="${(#mvc.url('JMC#newJoke')).build()}">Add Joke</a></button>
+        <span sec:authorize="isAuthenticated()"><button><a th:href="@{/logout}">Log out</a></button></span> <!-- Only visible to authenticated users. -->
+    </p>
 </body>
 </html>

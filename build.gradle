@@ -46,6 +46,10 @@ test {
 	useJUnitPlatform()
 }
 
+//
+// Liquibase Gradle code starts here
+//
+
 project.ext.mainUrl = 'jdbc:postgresql://localhost:5432/jokemanager'
 project.ext.mainUsername = 'jokeadmin'
 project.ext.mainPassword = 'jokeadminpw'
